@@ -10,7 +10,7 @@ function App() {
   const [apiCall, setApiCall] = useState(''); 
   const [apiResponse, setApiResponse] = useState(null); 
 
-  // Hacemos la llamada a la API a través del proxy
+
   useEffect(() => {
     fetch('https://hl-validators.vercel.app/api/validators')
       .then((response) => response.json())
