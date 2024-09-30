@@ -2,17 +2,18 @@ import React, { useState, useEffect } from 'react';
 import './App.css'; // Asegúrate de que Tailwind esté configurado correctamente aquí
 
 function App() {
-  const [validators, setValidators] = useState([]); 
-  const [loading, setLoading] = useState(true); 
-  const [error, setError] = useState(null); 
-  const [privateKey, setPrivateKey] = useState(''); 
-  const [amount, setAmount] = useState(''); 
-  const [apiCall, setApiCall] = useState(''); 
-  const [apiResponse, setApiResponse] = useState(null); 
+  const [validators, setValidators] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [privateKey, setPrivateKey] = useState('');
+  const [amount, setAmount] = useState('');
+  const [apiCall, setApiCall] = useState('');
+  const [apiResponse, setApiResponse] = useState(null);
 
-  // Hacemos la llamada a la API a través del proxy
+  // Hacemos la llamada a la API directamente
   useEffect(() => {
-    fetch('http://localhost:5000/api/validators')
+    // Cambia la URL a la que deseas llamar directamente
+    fetch('http://tu-api.com/api/validators') // Asegúrate de reemplazar esta URL con la correcta
       .then((response) => response.json())
       .then((data) => {
         console.log("Datos recibidos de la API:", data);
@@ -57,7 +58,7 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white p-4"> {/* Cambiado a min-h-screen */}
+    <div className="min-h-screen bg-black text-white p-4"> 
       <h1 className="text-2xl font-bold mb-4">Validators List</h1>
 
       {/* Cajas de texto para Private Key y Amount */}
@@ -141,3 +142,4 @@ function App() {
 }
 
 export default App;
+
