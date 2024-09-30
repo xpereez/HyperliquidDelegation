@@ -12,7 +12,7 @@ function App() {
 
   // Hacemos la llamada a la API a través del proxy
   useEffect(() => {
-    fetch('http://localhost:5000/api/validators')
+    fetch('https://hl-validators.vercel.app/api/validators')
       .then((response) => response.json())
       .then((data) => {
         console.log("Datos recibidos de la API:", data);
