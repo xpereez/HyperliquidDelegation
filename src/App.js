@@ -9,7 +9,7 @@ function App() {
   const [amount, setAmount] = useState('');
   const [apiCall, setApiCall] = useState('');
   const [apiResponse, setApiResponse] = useState(null);
-  const [warningAccepted, setWarningAccepted] = useState(false); // Nuevo estado para la advertencia
+  const [warningAccepted, setWarningAccepted] = useState(false); // Estado para la advertencia
 
   // Hacemos la llamada a la API de validadores
   useEffect(() => {
@@ -56,6 +56,9 @@ function App() {
     return (
       <div className="min-h-screen flex flex-col justify-center items-center bg-black text-white">
         <h1 className="text-4xl font-bold text-red-600">¡WARNING!</h1>
+        <p className="text-lg text-center mt-4 text-gray-300">
+          YOU MUST USE A BURNER WALLET, THIS IS A TESTNET
+        </p>
         <button
           onClick={() => setWarningAccepted(true)}
           className="mt-8 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -161,4 +164,5 @@ function App() {
 }
 
 export default App;
+
 
