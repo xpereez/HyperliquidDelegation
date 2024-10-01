@@ -2,21 +2,21 @@ import React, { useState, useEffect } from 'react';
 import './App.css'; // Asegúrate de que Tailwind esté configurado correctamente aquí
 
 function App() {
-  const [validators, setValidators] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [privateKey, setPrivateKey] = useState('');
-  const [amount, setAmount] = useState('');
-  const [apiCall, setApiCall] = useState('');
-  const [apiResponse, setApiResponse] = useState(null);
+  const [validators, setValidators] = useState([]); 
+  const [loading, setLoading] = useState(true); 
+  const [error, setError] = useState(null); 
+  const [privateKey, setPrivateKey] = useState(''); 
+  const [amount, setAmount] = useState(''); 
+  const [apiCall, setApiCall] = useState(''); 
+  const [apiResponse, setApiResponse] = useState(null); 
 
-  // Hacemos la llamada a la API de validadores
+  // Llamada a la API para obtener los validadores
   useEffect(() => {
-    fetch('/api/validators')
+    fetch('https://hl-validators.vercel.app/api/validators')
       .then((response) => response.json())
       .then((data) => {
         console.log("Datos recibidos de la API:", data);
-        setValidators(data.systemData.validators);
+        setValidators(data.systemData.validators); 
         setLoading(false);
       })
       .catch((err) => {
@@ -26,17 +26,16 @@ function App() {
   }, []);
 
   if (loading) {
-    return <div className="text-white">Loading...</div>;
+    return <div className="text-white">Loading...</div>; 
   }
 
   if (error) {
-    return <div className="text-white">Error: {error.message}</div>;
+    return <div className="text-white">Error: {error.message}</div>; 
   }
 
+  // Manejo de la delegación
   const handleDelegate = (validator) => {
-    const weiAmount = amount;
-
-    // Cambia la llamada para usar GET en lugar de POST
+    const weiAmount = amount; 
     const apiUrl = `/api/delegate?pk=${encodeURIComponent(privateKey)}&amount=${weiAmount}&validator=${encodeURIComponent(validator.validator)}`;
 
     setApiCall(apiUrl); // Muestra la URL generada en la UI
@@ -46,10 +45,18 @@ function App() {
       method: 'GET', // Cambiado a GET
     })
       .then((response) => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
+        // Primero, intenta convertir la respuesta a texto
+        return response.text() // Cambiamos a text() para manejar texto plano
+          .then((text) => {
+            // Intenta parsear como JSON
+            try {
+              const jsonData = JSON.parse(text);
+              return jsonData; // Si es JSON, lo devuelve
+            } catch (err) {
+              // Si hay un error, devuelve el texto sin procesar
+              return { message: text }; // Envolvemos el texto en un objeto
+            }
+          });
       })
       .then((data) => {
         setApiResponse(data); // Muestra la respuesta de la API en la UI
@@ -60,7 +67,7 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white p-4">
+    <div className="min-h-screen bg-black text-white p-4"> {/* Cambiado a min-h-screen */}
       <h1 className="text-2xl font-bold mb-4">Validators List</h1>
 
       {/* Cajas de texto para Private Key y Amount */}
@@ -71,22 +78,22 @@ function App() {
           id="private-key"
           value={privateKey}
           onChange={(e) => setPrivateKey(e.target.value)}
-          className="w-full p-2 border border-gray-700 bg-black text-white mb-4"
+          className="w-full p-2 border border-gray-700 bg-black text-white mb-4" 
         />
-
+        
         <label className="block mb-1 font-medium" htmlFor="amount">Amount</label>
         <input
           type="number"
           id="amount"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
-          className="w-full p-2 border border-gray-700 bg-black text-white"
+          className="w-full p-2 border border-gray-700 bg-black text-white" 
         />
       </div>
 
       <div className="overflow-x-auto relative">
         <table className="w-full text-sm text-left text-gray-400">
-          <thead className="text-xs text-gray-300 uppercase bg-black">
+          <thead className="text-xs text-gray-300 uppercase bg-black"> 
             <tr>
               <th scope="col" className="px-6 py-3">Validator</th>
               <th scope="col" className="px-6 py-3">Name</th>
@@ -99,21 +106,21 @@ function App() {
           </thead>
           <tbody>
             {validators.map((validator) => (
-              <tr key={validator.validator} className="bg-black border-b border-gray-700">
+              <tr key={validator.validator} className="bg-black border-b border-gray-700"> 
                 <td className="px-6 py-4">{validator.validator}</td>
                 <td className="px-6 py-4">{validator.name}</td>
                 <td className="px-6 py-4">{validator.description}</td>
                 <td className="px-6 py-4">{validator.nRecentBlocks}</td>
                 <td className="px-6 py-4">{validator.stake.toLocaleString()}</td>
                 <td className="px-6 py-4">
-                  <span
+                  <span 
                     className={`font-bold ${validator.isJailed ? 'text-red-500' : 'text-green-500'}`}>
                     {validator.isJailed ? 'Jailed' : 'Active'}
                   </span>
                 </td>
                 <td className="px-6 py-4">
-                  <button
-                    onClick={() => handleDelegate(validator)}
+                  <button 
+                    onClick={() => handleDelegate(validator)} 
                     className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                     Delegate
                   </button>
@@ -126,7 +133,7 @@ function App() {
 
       {/* Mostramos la llamada a la API debajo de la tabla */}
       {apiCall && (
-        <div className="mt-4 p-4 w-full border border-gray-700 bg-black rounded">
+        <div className="mt-4 p-4 w-full border border-gray-700 bg-black rounded"> 
           <h2 className="font-bold">API Call:</h2>
           <p className="text-gray-400">{apiCall}</p>
         </div>
@@ -134,7 +141,7 @@ function App() {
 
       {/* Mostramos la respuesta de la API debajo de la llamada a la API */}
       {apiResponse && (
-        <div className="mt-4 p-4 w-full border border-gray-700 bg-black rounded">
+        <div className="mt-4 p-4 w-full border border-gray-700 bg-black rounded"> 
           <h2 className="font-bold">API Response:</h2>
           <pre className="text-gray-400">{JSON.stringify(apiResponse, null, 2)}</pre>
         </div>
@@ -144,5 +151,3 @@ function App() {
 }
 
 export default App;
-
-
