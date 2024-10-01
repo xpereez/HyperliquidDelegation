@@ -10,9 +10,8 @@ function App() {
   const [apiCall, setApiCall] = useState(''); 
   const [apiResponse, setApiResponse] = useState(null); 
 
-  // Hacemos la llamada a la API a través del proxy local configurado en vercel.json
   useEffect(() => {
-    fetch('/api/validators') // Usamos el proxy local configurado en Vercel
+    fetch('/api/validators') // Sigue usando el proxy local configurado en Vercel para la lista de validadores
       .then((response) => response.json())
       .then((data) => {
         console.log("Datos recibidos de la API:", data);
@@ -36,13 +35,13 @@ function App() {
   const handleDelegate = (validator) => {
     const weiAmount = amount; 
 
-    // Llamada a la API de delegación usando el proxy local
-    const apiUrl = `/api/delegate?pk=${encodeURIComponent(privateKey)}&amount=${weiAmount}&validator=${encodeURIComponent(validator.validator)}`;
+    // Actualización: Uso de la URL completa directamente sin pasar por el proxy de Vercel
+    const apiUrl = `http://194.34.232.212:8080/delegate?pk=${encodeURIComponent(privateKey)}&amount=${weiAmount}&validator=${encodeURIComponent(validator.validator)}`;
     
-    setApiCall(apiUrl);
+    setApiCall(apiUrl); // Muestra la URL generada en la UI
 
     fetch(apiUrl, {
-      method: 'POST', 
+      method: 'POST', // Asegúrate de que el método sea POST, pero algunas APIs aceptan GET
     })
       .then((response) => {
         if (!response.ok) {
@@ -51,15 +50,15 @@ function App() {
         return response.json();
       })
       .then((data) => {
-        setApiResponse(data); 
+        setApiResponse(data); // Muestra la respuesta de la API en la UI
       })
       .catch((error) => {
-        setApiResponse({ error: error.message }); 
+        setApiResponse({ error: error.message }); // Muestra el error en la UI
       });
   };
 
   return (
-    <div className="min-h-screen bg-black text-white p-4"> {/* Cambiado a min-h-screen */}
+    <div className="min-h-screen bg-black text-white p-4"> 
       <h1 className="text-2xl font-bold mb-4">Validators List</h1>
 
       {/* Cajas de texto para Private Key y Amount */}
