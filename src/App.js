@@ -9,6 +9,7 @@ function App() {
   const [amount, setAmount] = useState('');
   const [apiCall, setApiCall] = useState('');
   const [apiResponse, setApiResponse] = useState(null);
+  const [warningAccepted, setWarningAccepted] = useState(false); // Nuevo estado para la advertencia
 
   // Hacemos la llamada a la API de validadores
   useEffect(() => {
@@ -25,14 +26,6 @@ function App() {
       });
   }, []);
 
-  if (loading) {
-    return <div className="text-white">Loading...</div>;
-  }
-
-  if (error) {
-    return <div className="text-white">Error: {error.message}</div>;
-  }
-
   const handleDelegate = (validator) => {
     const weiAmount = amount;
 
@@ -42,21 +35,46 @@ function App() {
 
     // Realiza la llamada con GET
     fetch(apiUrl, {
-      method: 'GET', // Asegúrate de que sea GET
+      method: 'GET',
     })
       .then((response) => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-        return response.text(); // Cambiado a text()
+        return response.text();
       })
       .then((data) => {
-        setApiResponse(data); // Almacena la respuesta de texto
+        setApiResponse(data); 
       })
       .catch((error) => {
-        setApiResponse({ error: error.message }); // Muestra el error en la UI
+        setApiResponse({ error: error.message });
       });
   };
+
+  // Si el estado de warningAccepted es false, muestra la advertencia
+  if (!warningAccepted) {
+    return (
+      <div className="min-h-screen flex flex-col justify-center items-center bg-black text-white">
+        <h1 className="text-4xl font-bold text-red-600">¡WARNING!</h1>
+        <button
+          onClick={() => setWarningAccepted(true)}
+          className="mt-8 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        >
+          OK
+        </button>
+      </div>
+    );
+  }
+
+  // Si está cargando los datos, muestra un indicador de carga
+  if (loading) {
+    return <div className="text-white">Loading...</div>;
+  }
+
+  // Si hay un error, muestra el mensaje de error
+  if (error) {
+    return <div className="text-white">Error: {error.message}</div>;
+  }
 
   return (
     <div className="min-h-screen bg-black text-white p-4">
@@ -73,7 +91,7 @@ function App() {
           className="w-full p-2 border border-gray-700 bg-black text-white mb-4"
         />
 
-        <label className="block mb-1 font-medium" htmlFor="amount">Amount (wei)</label>
+        <label className="block mb-1 font-medium" htmlFor="amount">Amount (wei)</label> {/* Cambiado a Amount (wei) */}
         <input
           type="number"
           id="amount"
@@ -135,7 +153,7 @@ function App() {
       {apiResponse && (
         <div className="mt-4 p-4 w-full border border-gray-700 bg-black rounded">
           <h2 className="font-bold">API Response:</h2>
-          <pre className="text-gray-400">{apiResponse}</pre> {/* Cambiado a solo mostrar texto */}
+          <pre className="text-gray-400">{apiResponse}</pre>
         </div>
       )}
     </div>
@@ -143,3 +161,4 @@ function App() {
 }
 
 export default App;
+
