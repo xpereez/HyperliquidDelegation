@@ -14,7 +14,7 @@ function App() {
   const [modalMessage, setModalMessage] = useState(''); // Mensaje que se mostrará en el modal
   const [isSuccess, setIsSuccess] = useState(false); // Controla si es un éxito o error
 
-  // aHacemos la llamada a la API de validadores
+  // Hacemos la llamada a la API de validadores
   useEffect(() => {
     fetch('/api/validators')
       .then((response) => response.json())
@@ -188,7 +188,17 @@ function App() {
             <p>{modalMessage}</p>
             <button
               onClick={() => setModalVisible(false)}
-              className="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-bold py-
+              className="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
 
+export default App;
 
 
