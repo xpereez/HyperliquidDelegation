@@ -73,7 +73,7 @@ function App() {
           className="w-full p-2 border border-gray-700 bg-black text-white mb-4"
         />
 
-        <label className="block mb-1 font-medium" htmlFor="amount">Amount</label>
+        <label className="block mb-1 font-medium" htmlFor="amount">"Amount (wei)"</label>
         <input
           type="number"
           id="amount"
