@@ -36,23 +36,22 @@ function App() {
   const handleDelegate = (validator) => {
     const weiAmount = amount;
 
-    // Cambia la llamada para usar GET en lugar de POST
     const apiUrl = `/api/delegate?pk=${encodeURIComponent(privateKey)}&amount=${weiAmount}&validator=${encodeURIComponent(validator.validator)}`;
 
     setApiCall(apiUrl); // Muestra la URL generada en la UI
 
-    // Realiza la llamada con GET en lugar de POST
+    // Realiza la llamada con GET
     fetch(apiUrl, {
-      method: 'GET', // Cambiado a GET
+      method: 'GET', // Asegúrate de que sea GET
     })
       .then((response) => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-        return response.json();
+        return response.text(); // Cambiado a text()
       })
       .then((data) => {
-        setApiResponse(data); // Muestra la respuesta de la API en la UI
+        setApiResponse(data); // Almacena la respuesta de texto
       })
       .catch((error) => {
         setApiResponse({ error: error.message }); // Muestra el error en la UI
@@ -136,7 +135,7 @@ function App() {
       {apiResponse && (
         <div className="mt-4 p-4 w-full border border-gray-700 bg-black rounded">
           <h2 className="font-bold">API Response:</h2>
-          <pre className="text-gray-400">{JSON.stringify(apiResponse, null, 2)}</pre>
+          <pre className="text-gray-400">{apiResponse}</pre> {/* Cambiado a solo mostrar texto */}
         </div>
       )}
     </div>
