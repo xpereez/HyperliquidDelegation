@@ -10,6 +10,7 @@ function App() {
   const [apiCall, setApiCall] = useState('');
   const [apiResponse, setApiResponse] = useState(null);
   const [warningAccepted, setWarningAccepted] = useState(false); // Estado para la advertencia
+  const [privateKeyError, setPrivateKeyError] = useState(''); // Estado para el error de la private key
 
   // Hacemos la llamada a la API de validadores
   useEffect(() => {
@@ -26,7 +27,22 @@ function App() {
       });
   }, []);
 
+  // Función para validar la private key
+  const validatePrivateKey = (key) => {
+    const hexRegex = /^[0-9a-fA-F]{64}$/; // 64 caracteres hexadecimales
+    return hexRegex.test(key);
+  };
+
   const handleDelegate = (validator) => {
+    // Primero validamos la private key antes de hacer la llamada
+    if (!validatePrivateKey(privateKey)) {
+      setPrivateKeyError('Invalid private key. It must be a 64-character hexadecimal string.');
+      return;
+    }
+
+    // Si es válida, limpiamos el error
+    setPrivateKeyError('');
+
     const weiAmount = amount;
 
     const apiUrl = `/api/delegate?pk=${encodeURIComponent(privateKey)}&amount=${weiAmount}&validator=${encodeURIComponent(validator.validator)}`;
@@ -91,10 +107,13 @@ function App() {
           id="private-key"
           value={privateKey}
           onChange={(e) => setPrivateKey(e.target.value)}
-          className="w-full p-2 border border-gray-700 bg-black text-white mb-4"
+          className={`w-full p-2 border ${privateKeyError ? 'border-red-600' : 'border-gray-700'} bg-black text-white mb-4`}
         />
+        {privateKeyError && (
+          <p className="text-red-500 text-sm mb-4">{privateKeyError}</p> // Mostramos el error de la private key
+        )}
 
-        <label className="block mb-1 font-medium" htmlFor="amount">Amount (wei)</label> {/* Cambiado a Amount (wei) */}
+        <label className="block mb-1 font-medium" htmlFor="amount">Amount (wei)</label>
         <input
           type="number"
           id="amount"
