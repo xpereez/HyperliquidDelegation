@@ -10,6 +10,8 @@ function App() {
   const [apiCall, setApiCall] = useState('');
   const [apiResponse, setApiResponse] = useState(null);
   const [warningAccepted, setWarningAccepted] = useState(false); // Estado para la advertencia
+  const [modalError, setModalError] = useState(false); // Estado para mostrar/ocultar modal de error
+  const [modalErrorMessage, setModalErrorMessage] = useState(''); // Mensaje de error del modal
 
   // Hacemos la llamada a la API de validadores
   useEffect(() => {
@@ -47,7 +49,9 @@ function App() {
         setApiResponse(data); 
       })
       .catch((error) => {
-        setApiResponse({ error: error.message });
+        // Mostramos el modal con el error de la API
+        setModalErrorMessage(error.message); // Almacena el mensaje de error
+        setModalError(true); // Activa el modal
       });
   };
 
@@ -159,10 +163,25 @@ function App() {
           <pre className="text-gray-400">{apiResponse}</pre>
         </div>
       )}
+
+      {/* Modal de Error */}
+      {modalError && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75">
+          <div className="bg-white text-black p-6 rounded shadow-md">
+            <h2 className="text-2xl font-bold mb-4 text-red-600">Error</h2>
+            <p>{modalErrorMessage}</p>
+            <button
+              onClick={() => setModalError(false)}
+              className="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
 export default App;
-
 
