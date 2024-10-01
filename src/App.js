@@ -10,9 +10,9 @@ function App() {
   const [apiCall, setApiCall] = useState(''); 
   const [apiResponse, setApiResponse] = useState(null); 
 
-
+  // Hacemos la llamada a la API a través del proxy local configurado en vercel.json
   useEffect(() => {
-    fetch('https://hl-validators.vercel.app/api/validators')
+    fetch('/api/validators') // Usamos el proxy local configurado en Vercel
       .then((response) => response.json())
       .then((data) => {
         console.log("Datos recibidos de la API:", data);
@@ -57,7 +57,7 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white p-4"> {/* Cambiado a min-h-screen */}
+    <div className="min-h-screen bg-black text-white p-4">
       <h1 className="text-2xl font-bold mb-4">Validators List</h1>
 
       {/* Cajas de texto para Private Key y Amount */}
