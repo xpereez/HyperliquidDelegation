@@ -14,7 +14,7 @@ function App() {
   const [modalMessage, setModalMessage] = useState(''); // Mensaje que se mostrará en el modal
   const [isSuccess, setIsSuccess] = useState(false); // Controla si es un éxito o error
 
-  // Hacemos la llamada a la API de validadores
+  // aHacemos la llamada a la API de validadores
   useEffect(() => {
     fetch('/api/validators')
       .then((response) => response.json())
