@@ -35,7 +35,9 @@ function App() {
 
   const handleDelegate = (validator) => {
     const weiAmount = amount; 
-    const apiUrl = `http://194.34.232.212:8080/delegate?pk=${encodeURIComponent(privateKey)}&amount=${weiAmount}&validator=${encodeURIComponent(validator.validator)}`;
+
+    // Llamada a la API de delegación usando el proxy local
+    const apiUrl = `/api/delegate?pk=${encodeURIComponent(privateKey)}&amount=${weiAmount}&validator=${encodeURIComponent(validator.validator)}`;
     
     setApiCall(apiUrl);
 
@@ -57,7 +59,7 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white p-4">
+    <div className="min-h-screen bg-black text-white p-4"> {/* Cambiado a min-h-screen */}
       <h1 className="text-2xl font-bold mb-4">Validators List</h1>
 
       {/* Cajas de texto para Private Key y Amount */}
