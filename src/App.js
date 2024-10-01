@@ -36,7 +36,7 @@ function App() {
     const weiAmount = amount; 
 
     // Actualización: Uso de la URL completa directamente sin pasar por el proxy de Vercel
-    const apiUrl = `http://194.34.232.212:8080/delegate?pk=${encodeURIComponent(privateKey)}&amount=${weiAmount}&validator=${encodeURIComponent(validator.validator)}`;
+    const apiUrl = `/api/delegate?pk=${encodeURIComponent(privateKey)}&amount=${weiAmount}&validator=${encodeURIComponent(validator.validator)}`;
     
     setApiCall(apiUrl); // Muestra la URL generada en la UI
 
