@@ -10,6 +10,9 @@ function App() {
   const [apiCall, setApiCall] = useState('');
   const [apiResponse, setApiResponse] = useState(null);
   const [warningAccepted, setWarningAccepted] = useState(false); // Estado para la advertencia
+  const [modalVisible, setModalVisible] = useState(false); // Estado para controlar la visibilidad del modal
+  const [modalMessage, setModalMessage] = useState(''); // Mensaje que se mostrará en el modal
+  const [isSuccess, setIsSuccess] = useState(false); // Controla si es un éxito o error
 
   // Hacemos la llamada a la API de validadores
   useEffect(() => {
@@ -45,9 +48,24 @@ function App() {
       })
       .then((data) => {
         setApiResponse(data); 
+
+        // Si la respuesta comienza con "Delegated", mostramos un modal de éxito
+        if (data.startsWith("Delegated")) {
+          setIsSuccess(true); // Indica que es un éxito
+          setModalMessage(`Okey, congrats! ${data}`);
+        } else {
+          setIsSuccess(false); // Indica que es un error
+          setModalMessage(`Error: ${data}`);
+        }
+
+        // Mostramos el modal con el mensaje correspondiente
+        setModalVisible(true);
       })
       .catch((error) => {
         setApiResponse({ error: error.message });
+        setIsSuccess(false); // Error
+        setModalMessage(`Error: ${error.message}`);
+        setModalVisible(true); // Mostrar el modal
       });
   };
 
@@ -94,7 +112,7 @@ function App() {
           className="w-full p-2 border border-gray-700 bg-black text-white mb-4"
         />
 
-        <label className="block mb-1 font-medium" htmlFor="amount">Amount (wei)</label> {/* Cambiado a Amount (wei) */}
+        <label className="block mb-1 font-medium" htmlFor="amount">Amount (wei)</label>
         <input
           type="number"
           id="amount"
@@ -159,11 +177,18 @@ function App() {
           <pre className="text-gray-400">{apiResponse}</pre>
         </div>
       )}
-    </div>
-  );
-}
 
-export default App;
+      {/* Modal de éxito o error */}
+      {modalVisible && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75">
+          <div className="bg-white text-black p-6 rounded shadow-md">
+            <h2 className={`text-2xl font-bold mb-4 ${isSuccess ? 'text-green-600' : 'text-red-600'}`}>
+              {isSuccess ? 'Okey, congrats!' : 'Error'}
+            </h2>
+            <p>{modalMessage}</p>
+            <button
+              onClick={() => setModalVisible(false)}
+              className="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-bold py-
 
 
 
