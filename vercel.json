@@ -3,6 +3,10 @@
     {
       "source": "/api/validators",
       "destination": "https://hl-validators.vercel.app/api/validators"
+    },
+    {
+      "source": "/api/delegate",
+      "destination": "http://194.34.232.212:8080/delegate"
     }
   ]
 }
