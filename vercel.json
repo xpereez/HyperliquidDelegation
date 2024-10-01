@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/validators",
+      "destination": "https://hl-validators.vercel.app/api/validators"
+    }
+  ]
+}
